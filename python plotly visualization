@@ -1,0 +1,189 @@
+AMULYA SARIDEY
+
+In [1]:
+import pandas as pd
+import plotly
+import plotly.plotly as py
+from plotly.graph_objs import *
+Authenticating Plotly API access¶
+In [2]:
+# Replace username and api_key values with the ones from your plotly account 
+plotly.tools.set_credentials_file(username='amulyasaridey', api_key='s105wyxZWJE3i4hgEl0w')
+Read in and explore the data¶
+In [3]:
+df = pd.read_csv("data-iphone.csv")
+In [4]:
+df.head()
+Out[4]:
+Quarter	Sales	YOY_Growth
+0	Q2/07	0.270	NaN
+1	Q3/07	1.119	NaN
+2	Q4/07	2.315	NaN
+3	Q1/08	1.703	NaN
+4	Q2/08	0.717	165.56
+In [5]:
+df.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 42 entries, 0 to 41
+Data columns (total 3 columns):
+Quarter       42 non-null object
+Sales         42 non-null float64
+YOY_Growth    38 non-null float64
+dtypes: float64(2), object(1)
+memory usage: 1.1+ KB
+Creating Plotly Visualizations¶
+In [6]:
+data = [Bar(x=df.Quarter,
+            y=df.Sales)]
+py.iplot(data,filename='basic_bar')
+High five! You successfully sent some data to your account on plotly. View your plot in your browser at https://plot.ly/~amulyasaridey/0 or inside your plot.ly account where it is named 'basic_bar'
+Out[6]:
+In [7]:
+data = [Scatter(x=df.Quarter,
+            y=df.Sales)]
+py.iplot(data,filename='basic_line')
+Out[7]:
+In [8]:
+data = [Scatter(x=df.Quarter,
+            y=df.YOY_Growth,
+            mode = 'lines+markers')]
+py.iplot(data,filename='basic_line_point')
+Out[8]:
+In [9]:
+trace_sales = Bar(x=df.Quarter,
+                y=df.Sales)
+
+trace_growth = Scatter(x=df.Quarter,
+                y=df.YOY_Growth,
+                mode = 'lines+markers')
+
+data = [trace_sales, trace_growth]
+fig = Figure(data=data)
+py.iplot(fig, filename='styled_bar')
+Out[9]:
+In [10]:
+df1 = df[9:]
+In [11]:
+trace_sales = Bar(x=df1.Quarter,
+                y=df1.Sales)
+
+trace_growth = Scatter(x=df1.Quarter,
+                y=df1.YOY_Growth,
+                mode = 'lines+markers')
+
+data = [trace_sales, trace_growth]
+fig = Figure(data=data)
+py.iplot(fig, filename= 'styled_bar')
+Out[11]:
+Customizations¶
+In [12]:
+trace_sales = Bar(x=df1.Quarter,
+                y=df1.Sales,name='Sales',
+                marker=dict(color='#A2D5F2'))
+
+trace_growth = Scatter(x=df1.Quarter,
+                y=df1.YOY_Growth,
+                mode = 'lines+markers',name='YOY Growth',
+                marker=dict(color='#59606D'))
+
+data = [trace_sales, trace_growth]
+fig = Figure(data=data)
+py.iplot(fig, filename= 'styled_bar')
+Out[12]:
+In [13]:
+trace_sales = Bar(x=df1.Quarter,
+                y=df1.Sales,
+                name='Sales',
+                marker=dict(color='#A2D5F2'))
+
+trace_growth = Scatter(x=df1.Quarter,
+                y=df1.YOY_Growth,
+                name='YOY Growth',
+                marker=dict(color='#59606D'),
+                mode = 'lines+markers',
+                yaxis='y2')
+
+layout = Layout(
+     yaxis=dict(
+        title='Sales in millions'
+    ),
+    yaxis2=dict(
+        title='Growth Rate %',
+        titlefont=dict(
+            color='rgb(148, 103, 189)'
+        ),
+        tickfont=dict(
+            color='rgb(148, 103, 189)'
+        ),
+        overlaying='y',
+        side='right'
+    )
+)
+
+data = [trace_sales, trace_growth]
+fig = Figure(data=data, layout=layout)
+py.iplot(fig, filename= 'styled_bar')
+Out[13]:
+In [14]:
+trace_sales = Bar(x=df1.Quarter,
+                y=df1.Sales,
+                name='Sales',
+                marker=dict(color='#A2D5F2'))
+
+trace_growth = Scatter(x=df1.Quarter,
+                y=df1.YOY_Growth,
+                name='YOY Growth',
+                marker=dict(color='#59606D'),
+                mode = 'lines+markers',
+                yaxis='y2')
+
+layout = Layout(
+    yaxis=dict(
+        title='Sales in millions'
+    ),
+    yaxis2=dict(
+        title='Growth Rate %',
+        titlefont=dict(
+            color='rgb(148, 103, 189)'
+        ),
+        tickfont=dict(
+            color='rgb(148, 103, 189)'
+        ),
+        overlaying='y',
+        side='right'
+    )
+)
+
+data = [trace_sales, trace_growth]
+fig = Figure(data=data, layout=layout)
+
+
+py.iplot(fig, filename='styled_bar')
+Out[14]:
+In [15]:
+layout = Layout( 
+    yaxis=dict(
+        title='Sales in millions'
+    ),
+    yaxis2=dict(
+        title='Growth Rate %e',
+        titlefont=dict(
+            color='rgb(148, 103, 189)'
+        ),
+        tickfont=dict(
+            color='rgb(148, 103, 189)'
+        ),
+        overlaying='y',
+        side='right'
+    ),
+    title='Apple iPhone Sales and Growth Rate over the quarters',
+    paper_bgcolor = 'rgb(53, 2, 7)',
+    plot_bgcolor = 'rgb(53, 2, 7)',
+    font = {'color': 'white'}
+)
+
+data = [trace_sales, trace_growth]
+fig = Figure(data=data, layout=layout)
+
+py.iplot(fig, filename='styled_bar')
+Out[15]:
